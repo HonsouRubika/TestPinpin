@@ -1,0 +1,49 @@
+# =============== #
+# Unity generated #
+# =============== #
+[Ss]creenshots/*
+[Rr]ecordings/*
+[Tt]emp/
+[Oo]bj/
+[Bb]uild
+/[Bb]uilds/
+/[Ll]ibrary/
+sysinfo.txt
+*.stackdump
+/Assets/AssetStoreTools*
+*.apk
+*.unitypackage
+*.unitypackage.meta
+!/Assets/Packages/*.unitypackage
+!/Assets/Packages/*.unitypackage.meta
+ 
+# ===================================== #
+# Visual Studio / MonoDevelop generated #
+# ===================================== #
+[Ee]xported[Oo]bj/
+.vs/
+/*.userprefs
+/*.csproj
+/*.pidb
+*.pidb.meta
+/*.suo
+/*.sln*
+/*.user
+/*.unityproj
+/*.booproj
+.consulo/
+/*.tmp
+/*.svd
+ 
+# ============ #
+# OS generated #
+# ============ #
+.DS_Store*
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+[Tt]humbs.db
+[Dd]esktop.ini
+Packages/packages-lock.json
+Assets/_GameAssets/Sprites/Game/ScreenshotsUtil.meta
