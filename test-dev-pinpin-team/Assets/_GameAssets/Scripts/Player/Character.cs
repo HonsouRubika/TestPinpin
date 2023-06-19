@@ -15,6 +15,7 @@ namespace Pinpin
         [SerializeField] protected float m_maxSpeed = 1f;
         [SerializeField] protected float m_strength= 1f;
         [SerializeField] protected float m_chopPerSecond = 1f;
+        public float ChoppingSeed { get => m_chopPerSecond; set => m_chopPerSecond = value; }
         //[SerializeField] protected float m_attackPerSecond = 1f; //for rocks
         protected Vector3 m_lastPosition = Vector3.zero;
         protected float m_lastMagnitude = 0f;
@@ -107,11 +108,14 @@ namespace Pinpin
         {
             m_chopPerSecond += boostAmount;
 
+            //update UI
+            GameManager.Instance.UIManager.ChoppingBoostLevel.text = m_chopPerSecond.ToString();
+
             //save change
             PlayerPrefs.SetFloat("ChoppingSpeedMultiplicator", m_chopPerSecond);
             PlayerPrefs.Save();
 
-            //change animation speed
+            //apply change to animation
             float previousMultiplicator = m_animator.GetFloat("ChoppingSpeed");
             m_animator.SetFloat("ChoppingSpeed", previousMultiplicator + boostAmount);
         }

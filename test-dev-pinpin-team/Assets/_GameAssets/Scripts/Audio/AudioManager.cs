@@ -18,8 +18,14 @@ public class AudioManager : MonoBehaviour
     [Header("SFX")]
     [SerializeField] List<AudioClip> cutWoodSFX;
     [SerializeField] AudioClip winSFX;
+    [SerializeField] AudioClip buttonClickSFX;
 
     #region SFX
+
+    public void UpgradeButtonClickSFX()
+    {
+        PlaySFX(buttonClickSFX);
+    }
 
     public void CutWoodSFX(float woodHealth)
     {

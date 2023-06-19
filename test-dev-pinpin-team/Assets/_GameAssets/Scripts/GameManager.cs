@@ -55,16 +55,21 @@ namespace Pinpin
                 Debug.Log("Load previous save");
                 WoodCount = PlayerPrefs.GetInt("WoodCount");
                 AmountTreeCut = PlayerPrefs.GetInt("AmountTreeCut");
-                Player.AddChoppingSpeedBoost(PlayerPrefs.GetInt("ChoppingSpeedMultiplicator"));
+                Player.ChoppingSeed = PlayerPrefs.GetInt("ChoppingSpeedMultiplicator");
 
-                UIManager.ChangeTreeAmount(WoodCount);
+                //
+                if (Player.ChoppingSeed <= 0) Player.ChoppingSeed = 1;
+
+                //update UI
+                UIManager.SetTreeAmount(WoodCount);
+                UIManager.ChoppingBoostLevel.text = Player.ChoppingSeed.ToString();
             }
             else
             {
                 Debug.Log("Create save");
                 PlayerPrefs.SetInt("WoodCount", 0);
                 PlayerPrefs.SetInt("AmountTreeCut", 0);
-                PlayerPrefs.SetFloat("ChoppingSpeedMultiplicator", 0);
+                PlayerPrefs.SetFloat("ChoppingSpeedMultiplicator", 1);
                 PlayerPrefs.Save();
 
                 WoodCount = 0;
@@ -82,7 +87,7 @@ namespace Pinpin
             PlayerPrefs.SetInt("AmountTreeCut", AmountTreeCut);
             PlayerPrefs.Save();
 
-            UIManager.ChangeTreeAmount(WoodCount);
+            UIManager.ChangeTreeAmount(5);
 
             //total amount of tree is a multiple of 10
             if (AmountTreeCut % 10 == 0)
@@ -101,7 +106,7 @@ namespace Pinpin
                 PlayerPrefs.SetInt("AmountTreeCut", AmountTreeCut);
                 PlayerPrefs.Save();
 
-                UIManager.ChangeTreeAmount(WoodCount);
+                UIManager.SetTreeAmount(WoodCount);
                 return true;
             }
         }
@@ -115,6 +120,15 @@ namespace Pinpin
             //play victory sfx
             AudioManager.VictorySFX();
             Debug.Log("LEVEL WON!");
+        }
+
+        private void OnApplicationQuit()
+        {
+            //save players progration
+            PlayerPrefs.SetInt("WoodCount", WoodCount);
+            PlayerPrefs.SetInt("AmountTreeCut", AmountTreeCut);
+            PlayerPrefs.SetFloat("ChoppingSpeedMultiplicator", Player.ChoppingSeed);
+            PlayerPrefs.Save();
         }
 
     }

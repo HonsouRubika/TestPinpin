@@ -82,6 +82,9 @@ namespace Pinpin
 
             GameManager.Instance.TreeSpawner.Trees.Remove(this);
 
+            //destroy particles
+
+
             Destroy(gameObject);
         }
 
