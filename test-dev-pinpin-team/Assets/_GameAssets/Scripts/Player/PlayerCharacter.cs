@@ -32,10 +32,54 @@ namespace Pinpin
             base.Start();
             m_targetPosition = transform.position;
             m_lastValidPosition = transform.position;
+
+            //load game config
+            m_maxSpeed = GameManager.Instance.GameConfig.PlayerSpeed;
         }
 
+        #region Upgrades
+
+        #region Movement Speed
+
+        public void AddMovementSpeedBoost(float maxSpeedAdded, float boostDuration)
+        {
+            m_maxSpeed += maxSpeedAdded;
+
+            StartCoroutine(RemoveMovementSeepdBoost(maxSpeedAdded, boostDuration));
+        }
+
+        IEnumerator RemoveMovementSeepdBoost(float amountToRemove, float boostDuration)
+        {
+            yield return new WaitForSeconds(boostDuration);
+            m_maxSpeed -= amountToRemove;
+        }
+
+        #endregion
+
+        #region Chopping Speed
+
+        public void AddChoppingSpeedBoost(int boostAmount = 1)
+        {
+            m_chopPerSecond += boostAmount;
+
+            //update UI
+            GameManager.Instance.UIManager.ChoppingBoostLevel.text = m_chopPerSecond.ToString();
+
+            //save change
+            PlayerPrefs.SetFloat("ChoppingSpeedMultiplicator", m_chopPerSecond);
+            PlayerPrefs.Save();
+
+            //apply change to animation
+            float previousMultiplicator = m_animator.GetFloat("ChoppingSpeed");
+            m_animator.SetFloat("ChoppingSpeed", previousMultiplicator + boostAmount);
+        }
+
+        #endregion
+
+        #endregion
+
         #region Movement
-        
+
         #region SFX
 
         public void PlayWalkingSFX()

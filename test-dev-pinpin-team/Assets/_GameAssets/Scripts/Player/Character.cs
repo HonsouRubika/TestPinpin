@@ -7,7 +7,6 @@ namespace Pinpin
     public class Character : MonoBehaviour
     {
         [Header("Character References")]
-        [SerializeField] Animation chopAnimation;
         [SerializeField] protected Animator m_animator;
         [SerializeField] protected IKTargeter m_animatorIKTargeter;
         [SerializeField] ParticleSystem toolHitParticleSystem;
@@ -15,7 +14,7 @@ namespace Pinpin
         [SerializeField] protected float m_maxSpeed = 1f;
         [SerializeField] protected float m_strength= 1f;
         [SerializeField] protected float m_chopPerSecond = 1f;
-        public float ChoppingSeed { get => m_chopPerSecond; set => m_chopPerSecond = value; }
+        public float ChoppingSpeed { get => m_chopPerSecond; set => m_chopPerSecond = value; }
         //[SerializeField] protected float m_attackPerSecond = 1f; //for rocks
         protected Vector3 m_lastPosition = Vector3.zero;
         protected float m_lastMagnitude = 0f;
@@ -27,9 +26,6 @@ namespace Pinpin
         protected virtual void Start ()
         {
             m_lastPosition = transform.position;
-
-            //load game config
-            m_maxSpeed = GameManager.Instance.GameConfig.PlayerSpeed;
         }
 
 #region Movement
@@ -82,47 +78,6 @@ namespace Pinpin
         }
         #endregion
 
-        #region Upgrades
-
-
-        #region Movement Speed
-
-        public void AddMovementSpeedBoost(float maxSpeedAdded, float boostDuration)
-        {
-            m_maxSpeed += maxSpeedAdded;
-
-            StartCoroutine(RemoveMovementSeepdBoost(maxSpeedAdded, boostDuration));
-        }
-
-        IEnumerator RemoveMovementSeepdBoost(float amountToRemove, float boostDuration)
-        {
-            yield return new WaitForSeconds(boostDuration);
-            m_maxSpeed -= amountToRemove;
-        }
-
-        #endregion
-
-        #region Chopping Speed
-
-        public void AddChoppingSpeedBoost(int boostAmount = 1)
-        {
-            m_chopPerSecond += boostAmount;
-
-            //update UI
-            GameManager.Instance.UIManager.ChoppingBoostLevel.text = m_chopPerSecond.ToString();
-
-            //save change
-            PlayerPrefs.SetFloat("ChoppingSpeedMultiplicator", m_chopPerSecond);
-            PlayerPrefs.Save();
-
-            //apply change to animation
-            float previousMultiplicator = m_animator.GetFloat("ChoppingSpeed");
-            m_animator.SetFloat("ChoppingSpeed", previousMultiplicator + boostAmount);
-        }
-
-        #endregion
-
-        #endregion
 
         protected virtual void FixedUpdate ()
         {

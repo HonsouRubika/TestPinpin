@@ -17,7 +17,7 @@ public class SpeedBoost : MonoBehaviour
         if (other.attachedRigidbody == null)
             return;
 
-        Character character = other.attachedRigidbody.GetComponent<Character>();
+        PlayerCharacter character = other.attachedRigidbody.GetComponent<PlayerCharacter>();
         if (character != null)
         {
             character.AddMovementSpeedBoost(boostAmount, boostDuration);

@@ -58,8 +58,10 @@ public class TreeSpawner : MonoBehaviour
     {
         Vector3 treePosition = RandomPointInBounds(spawnArea.bounds);
         GameObject newTree = Instantiate(treePrefab, treePosition, treesParent.transform.rotation, treesParent.transform);
+        Pinpin.Tree treeScript = newTree.GetComponent<Pinpin.Tree>();
 
-        Trees.Add(newTree.GetComponent<Pinpin.Tree>());
+        Trees.Add(treeScript);
+        GameManager.Instance.Chopper.NewTreeAppeared(treeScript);
     }
 
     private Vector3 RandomPointInBounds(Bounds bounds)

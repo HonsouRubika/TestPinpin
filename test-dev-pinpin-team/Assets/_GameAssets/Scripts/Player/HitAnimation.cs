@@ -5,11 +5,11 @@ using Pinpin;
 
 public class HitAnimation : MonoBehaviour
 {
-    [SerializeField] PlayerCharacter playerCharacter;
+    [SerializeField] Character character;
 
     public void Hit()
     {
-        playerCharacter.Hit();
+        character.Hit();
     }
     
 }

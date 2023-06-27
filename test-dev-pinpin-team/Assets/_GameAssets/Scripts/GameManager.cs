@@ -19,6 +19,9 @@ namespace Pinpin
         [SerializeField] private PlayerCharacter playerCharacter;
         public PlayerCharacter Player => m_instance.playerCharacter;
 
+        [SerializeField] private Chopper chopper;
+        public Chopper Chopper => m_instance.chopper;
+
         [SerializeField] private UIManager uiManager;
         public UIManager UIManager => m_instance.uiManager;
 
@@ -55,14 +58,14 @@ namespace Pinpin
                 Debug.Log("Load previous save");
                 WoodCount = PlayerPrefs.GetInt("WoodCount");
                 AmountTreeCut = PlayerPrefs.GetInt("AmountTreeCut");
-                Player.ChoppingSeed = PlayerPrefs.GetInt("ChoppingSpeedMultiplicator");
+                Player.ChoppingSpeed = PlayerPrefs.GetInt("ChoppingSpeedMultiplicator");
 
                 //
-                if (Player.ChoppingSeed <= 0) Player.ChoppingSeed = 1;
+                if (Player.ChoppingSpeed <= 0) Player.ChoppingSpeed = 1;
 
                 //update UI
                 UIManager.SetTreeAmount(WoodCount);
-                UIManager.ChoppingBoostLevel.text = Player.ChoppingSeed.ToString();
+                UIManager.ChoppingBoostLevel.text = Player.ChoppingSpeed.ToString();
             }
             else
             {
@@ -127,7 +130,7 @@ namespace Pinpin
             //save players progration
             PlayerPrefs.SetInt("WoodCount", WoodCount);
             PlayerPrefs.SetInt("AmountTreeCut", AmountTreeCut);
-            PlayerPrefs.SetFloat("ChoppingSpeedMultiplicator", Player.ChoppingSeed);
+            PlayerPrefs.SetFloat("ChoppingSpeedMultiplicator", Player.ChoppingSpeed);
             PlayerPrefs.Save();
         }
 
