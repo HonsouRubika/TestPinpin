@@ -97,6 +97,11 @@ namespace Pinpin
                 LevelWon();
         }
 
+        public void NewRockInStorage()
+        {
+
+        }
+
         public bool UseWood(int woodAmount)
         {
             if (WoodCount < woodAmount) return false;

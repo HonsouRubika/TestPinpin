@@ -17,6 +17,7 @@ public class AudioManager : MonoBehaviour
 
     [Header("SFX")]
     [SerializeField] List<AudioClip> cutWoodSFX;
+    [SerializeField] List<AudioClip> pickRockSFX;
     [SerializeField] AudioClip winSFX;
     [SerializeField] AudioClip buttonClickSFX;
 
@@ -35,6 +36,16 @@ public class AudioManager : MonoBehaviour
         //last hit (tree destruction)
         else
             PlaySFX(cutWoodSFX[2]);
+    }
+
+    public void PickRockSFX(float rockHealth)
+    {
+        //first hit
+        if (rockHealth != 0)
+            PlaySFX(pickRockSFX[Random.Range(0, 2)]);
+        //last hit (rock destruction)
+        else
+            PlaySFX(pickRockSFX[2]);
     }
 
     public void VictorySFX()

@@ -12,29 +12,29 @@ namespace Pinpin
         [SerializeField] ParticleSystem toolHitParticleSystem;
         [Header("Character Properties")]
         [SerializeField] protected float m_maxSpeed = 1f;
-        [SerializeField] protected float m_strength= 1f;
+        [SerializeField] protected float m_strength = 1f;
         [SerializeField] protected float m_chopPerSecond = 1f;
         public float ChoppingSpeed { get => m_chopPerSecond; set => m_chopPerSecond = value; }
         //[SerializeField] protected float m_attackPerSecond = 1f; //for rocks
         protected Vector3 m_lastPosition = Vector3.zero;
         protected float m_lastMagnitude = 0f;
         protected Vector3 m_animationDirection = Vector3.zero;
-        protected List<Tree> m_treesInRange = new List<Tree>();
+        protected List<Collectible> m_collectiblesInRange = new List<Collectible>();
         protected float m_lastAttackTime = 0f;
-        protected Tree m_targetTree = null;
+        protected Collectible m_targetCollectible = null;
 
-        protected virtual void Start ()
+        protected virtual void Start()
         {
             m_lastPosition = transform.position;
         }
 
-#region Movement
-        protected virtual bool CanWalk ( Vector3 position )
+        #region Movement
+        protected virtual bool CanWalk(Vector3 position)
         {
             return true;
         }
 
-        protected virtual bool IsGrounded ( Vector3 targetPos )
+        protected virtual bool IsGrounded(Vector3 targetPos)
         {
             targetPos += Vector3.up;
             RaycastHit hit;
@@ -46,7 +46,7 @@ namespace Pinpin
             return false;
         }
 
-        protected virtual void UpdateMovementSpeedAnimation ()
+        protected virtual void UpdateMovementSpeedAnimation()
         {
             if (IsGrounded(transform.position))
             {
@@ -79,32 +79,32 @@ namespace Pinpin
         #endregion
 
 
-        protected virtual void FixedUpdate ()
+        protected virtual void FixedUpdate()
         {
             UpdateMovementSpeedAnimation();
         }
 
-        public void AddTree(Tree tree)
+        public void AddCollectible(Collectible collectible)
         {
-            if (!m_treesInRange.Contains(tree))
+            if (!m_collectiblesInRange.Contains(collectible))
             {
-                m_treesInRange.Add(tree);
-                tree.onDestroy += RemoveTree;
+                m_collectiblesInRange.Add(collectible);
+                collectible.onDestroy += RemoveCollectible;
             }
         }
 
-        public void RemoveTree(Tree tree)
+        public void RemoveCollectible(Collectible collectible)
         {
-            tree.onDestroy -= RemoveTree;
-            m_treesInRange.Remove(tree);
-            if (tree == m_targetTree)
+            collectible.onDestroy -= RemoveCollectible;
+            m_collectiblesInRange.Remove(collectible);
+            if (collectible == m_targetCollectible)
             {
-                m_targetTree.DisableOutline();
-                m_targetTree = null;
+                m_targetCollectible.DisableOutline();
+                m_targetCollectible = null;
             }
         }
 
-        private int SortByDistance(Tree a, Tree b)
+        private int SortByDistance(Collectible a, Collectible b)
         {
             if (a == null || b == null)
             {
@@ -120,9 +120,9 @@ namespace Pinpin
         //animation event
         public virtual void Hit()
         {
-            if (m_targetTree == null) return;
+            if (m_targetCollectible == null) return;
 
-            m_targetTree.Hit(m_strength);
+            m_targetCollectible.Hit(m_strength);
 
             //play vfx (particle system)
             toolHitParticleSystem.Play();
@@ -135,31 +135,35 @@ namespace Pinpin
 
         #endregion
 
-        public virtual void Update ()
+        public virtual void Update()
         {
-            if (m_treesInRange.Count > 0)
+            if (m_collectiblesInRange.Count > 0)
             {
                 //turn on cutting wood anim
 
-                m_treesInRange.Sort(SortByDistance);
-                if (m_targetTree != null && m_targetTree != m_treesInRange[0])
+                m_collectiblesInRange.Sort(SortByDistance);
+                if (m_targetCollectible != null && m_targetCollectible != m_collectiblesInRange[0])
                 {
-                    m_targetTree.DisableOutline();
+                    m_targetCollectible.DisableOutline();
                 }
-                m_targetTree = m_treesInRange[0];
+                m_targetCollectible = m_collectiblesInRange[0];
 
-                if (m_targetTree.IsBurning)
+                if (m_targetCollectible is Pinpin.Tree)
                 {
-                    RemoveTree(m_targetTree);
-                    m_targetTree = null;
-                    return;
+                    Tree tree = (Tree)m_targetCollectible;
+                    if (tree.IsBurning)
+                    {
+                        RemoveCollectible(m_targetCollectible);
+                        m_targetCollectible = null;
+                        return;
+                    }
                 }
 
-                m_targetTree.EnableOutline();
-                m_animatorIKTargeter.headTargetTransform = m_targetTree.lookAtTfm;
+                m_targetCollectible.EnableOutline();
+                m_animatorIKTargeter.headTargetTransform = m_targetCollectible.lookAtTfm;
 
                 //if (Time.time - m_lastAttackTime > m_chopPerSecond)
-                if(Time.time >= m_lastAttackTime + (1/m_chopPerSecond))
+                if (Time.time >= m_lastAttackTime + (1 / m_chopPerSecond))
                 {
                     m_lastAttackTime = Time.time;
                     StartChopAnimation();
@@ -169,10 +173,10 @@ namespace Pinpin
             {
                 //turn off cutting wood anim
 
-                if (m_targetTree != null)
+                if (m_targetCollectible != null)
                 {
-                    m_targetTree.DisableOutline();
-                    m_targetTree = null;
+                    m_targetCollectible.DisableOutline();
+                    m_targetCollectible = null;
                 }
                 m_animatorIKTargeter.headTargetTransform = null;
             }

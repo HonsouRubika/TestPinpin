@@ -132,9 +132,9 @@ namespace Pinpin
                 }
             }
 
-            if (m_targetTree != null)
+            if (m_targetCollectible != null)
             {
-                Vector3 treeDir = (m_targetTree.transform.position - transform.position);
+                Vector3 treeDir = (m_targetCollectible.transform.position - transform.position);
                 treeDir.y = 0;
                 transform.forward = Vector3.Lerp(transform.forward, treeDir.normalized, 0.3f);
             }
@@ -176,9 +176,9 @@ namespace Pinpin
                 {
                     Vector3 forward = transform.forward;
                     Move(m_lastJoystickDirection);
-                    if (m_targetTree != null)
+                    if (m_targetCollectible != null)
                     {
-                        Vector3 treeDir = (m_targetTree.transform.position - transform.position);
+                        Vector3 treeDir = (m_targetCollectible.transform.position - transform.position);
                         treeDir.y = 0;
                         transform.forward = Vector3.Lerp(forward, treeDir.normalized, 0.3f);
                     }

@@ -54,14 +54,13 @@ public class Chopper : Character
         StopMoving();
 
         targetedTree = null;
-        m_targetTree = null;
+        m_targetCollectible = null;
     }
 
     public void Move()
     {
         m_moveSpeed = Mathf.Lerp(m_moveSpeed, m_maxSpeed, Time.deltaTime * m_moveAcceleration);
         Vector3 direction = (targetedTree.transform.position - transform.position).normalized;
-        //direction.y = 0f;
 
         //rotation
         transform.forward = direction;
@@ -116,7 +115,7 @@ public class Chopper : Character
                     currentState = ChopperState.Waiting;
                     return;
                 }
-                else if (m_treesInRange.Contains(targetedTree))
+                else if (m_collectiblesInRange.Contains(targetedTree))
                 {
                     currentState = ChopperState.Chop;
                     return;
