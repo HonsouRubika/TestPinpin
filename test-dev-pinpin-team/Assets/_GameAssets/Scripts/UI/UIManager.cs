@@ -85,7 +85,7 @@ public class UIManager : MonoBehaviour
             //sound feedback
             GameManager.Instance.AudioManager.UpgradeButtonClickSFX();
 
-            Debug.Log("Buy chopping speed upgrade");
+            Debug.Log("Purchase Chopper AI");
             GameManager.Instance.Chopper.Purchase();
         }
     }

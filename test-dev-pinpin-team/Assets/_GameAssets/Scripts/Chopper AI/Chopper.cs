@@ -24,6 +24,7 @@ public class Chopper : Character
     private ChopperState currentState = ChopperState.Waiting;
     private Pinpin.Tree targetedTree;
 
+    //activates IA via UI
     public void Purchase()
     {
         IsPurchased = true;
@@ -66,14 +67,17 @@ public class Chopper : Character
 
     public void Move()
     {
+        //increment speed
         m_moveSpeed = Mathf.Lerp(m_moveSpeed, m_maxSpeed, Time.deltaTime * m_moveAcceleration);
+        
+        //calculate targeted tree direction
         Vector3 direction = (targetedTree.transform.position - transform.position).normalized;
 
-        //rotation
+        //apply rotation
         transform.forward = direction;
         //transform.forward = Vector3.Lerp(transform.position, direction, m_moveSpeed);
 
-        //position
+        //apply velocity in order to move to desination
         m_rigidbody.velocity = direction * m_moveSpeed;
     }
 
@@ -115,25 +119,27 @@ public class Chopper : Character
                 StopMoving();
                 break;
             case ChopperState.ReachingTree:
-
                 //in case player cuts targeted tree
                 if (targetedTree == null)
                 {
                     currentState = ChopperState.Waiting;
                     return;
                 }
+                //chopper AI reached targeted tree
                 else if (m_collectiblesInRange.Contains(targetedTree))
                 {
                     currentState = ChopperState.Chop;
                     return;
                 }
+                //targeted tree is burning, go back to waiting state
                 if (targetedTree.IsBurning)
                 {
                     targetedTree = null;
+                    currentState = ChopperState.Waiting;
                     return;
                 }
 
-                //movement and rotation
+                //alculate and apply movement and rotation
                 Move();
 
                 PlayWalkingSFX();
@@ -156,6 +162,7 @@ public class Chopper : Character
                 break;
         }
 
+        //chopping wood
         base.Update();
     }
 
