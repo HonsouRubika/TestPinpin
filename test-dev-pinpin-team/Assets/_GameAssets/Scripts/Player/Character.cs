@@ -135,7 +135,7 @@ namespace Pinpin
 
         #endregion
 
-        private void Update ()
+        public virtual void Update ()
         {
             if (m_treesInRange.Count > 0)
             {

@@ -6,12 +6,13 @@ using Pinpin;
 public class LightningManager : MonoBehaviour
 {
     [Header("Properties")]
+    [SerializeField] bool isActive = true;
     [SerializeField] float lightningFrequence = 30f;
     private float lastTimeLightningStriked = 0;
 
     private void Update()
     {
-        if(Time.time >= lastTimeLightningStriked + lightningFrequence)
+        if(isActive && Time.time >= lastTimeLightningStriked + lightningFrequence)
         {
             GenerateLigthning();
             lastTimeLightningStriked = Time.time;

@@ -16,12 +16,12 @@ namespace Pinpin
                 if (character != null)
                 {
                     Debug.Log("respawn player");
-                    character.transform.position = Vector3.zero;
+                    character.transform.position = new Vector3(0, 0, 0);
                 }
                 if (chopper != null)
                 {
                     Debug.Log("respawn IA");
-                    chopper.transform.position = Vector3.zero;
+                    chopper.transform.position = new Vector3(0, 0, 0);
                     chopper.Respawn();
                 }
             }

@@ -4420,6 +4420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b18c8a2a2f603c346826fc82fbafd975, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isActive: 1
   lightningFrequence: 30
 --- !u!4 &2030776508
 Transform:
@@ -4895,11 +4896,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9223182964052838017, guid: 1fb51d69486a19f41b6a12a8cb3c6aa4,
-        type: 3}
-      propertyPath: m_maxSpeed
-      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1fb51d69486a19f41b6a12a8cb3c6aa4, type: 3}

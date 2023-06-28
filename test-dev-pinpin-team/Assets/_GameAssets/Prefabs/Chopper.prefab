@@ -24,12 +24,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5504589259983626882}
-  m_LocalRotation: {x: 0.5000007, y: -0.5000007, z: -0.49999934, w: -0.49999934}
-  m_LocalPosition: {x: 1.3066297, y: -0.0033081095, z: 0}
+  m_LocalRotation: {x: -0, y: -0.00000011920926, z: 0.000000029802315, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 7328786402173972136}
-  m_RootOrder: 4
+  m_Father: {fileID: 7328786402173972208}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &7269882090116209671
 CapsuleCollider:
@@ -694,7 +694,6 @@ Transform:
   - {fileID: 7328786402173972200}
   - {fileID: 7328786402173972166}
   - {fileID: 7328786402173972216}
-  - {fileID: 8590270038694679265}
   m_Father: {fileID: 7328786402173972210}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1735,6 +1734,7 @@ Transform:
   m_Children:
   - {fileID: 7328786402173972202}
   - {fileID: 7328786402173972210}
+  - {fileID: 8590270038694679265}
   m_Father: {fileID: 7328786403295212769}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1751,7 +1751,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: a1731e645fb487b47ac3a90337a39ba2, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 1
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -1938,7 +1938,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7328786403295212768}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 3.73, y: 0, z: -3.98}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7328786402173972208}
@@ -1960,7 +1960,7 @@ MonoBehaviour:
   m_animator: {fileID: 7328786402183479674}
   m_animatorIKTargeter: {fileID: 8879529225366403534}
   toolHitParticleSystem: {fileID: 2788214354519251103}
-  m_maxSpeed: 1
+  m_maxSpeed: 3
   m_strength: 1
   m_chopPerSecond: 1
   playerAudioSource: {fileID: 102851221983837973}
@@ -1970,6 +1970,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 0ab8ce59fac44f247b4c951bee65ad5e, type: 3}
   m_rigidbody: {fileID: 3812687504130144527}
   walkingStepAudioDelay: 0.4
+  m_moveAcceleration: 3
 --- !u!54 &3812687504130144527
 Rigidbody:
   m_ObjectHideFlags: 0
