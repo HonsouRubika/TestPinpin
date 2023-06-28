@@ -9,7 +9,11 @@ namespace Pinpin
         [Header("Character References")]
         [SerializeField] protected Animator m_animator;
         [SerializeField] protected IKTargeter m_animatorIKTargeter;
-        [SerializeField] ParticleSystem toolHitParticleSystem;
+        [SerializeField] GameObject axe;
+        [SerializeField] GameObject pickaxe;
+        [SerializeField] ParticleSystem axeHitParticleSystem;
+        [SerializeField] ParticleSystem pickaxeHitParticleSystem;
+
         [Header("Character Properties")]
         [SerializeField] protected float m_maxSpeed = 1f;
         [SerializeField] protected float m_strength = 1f;
@@ -22,6 +26,10 @@ namespace Pinpin
         protected List<Collectible> m_collectiblesInRange = new List<Collectible>();
         protected float m_lastAttackTime = 0f;
         protected Collectible m_targetCollectible = null;
+
+        //tools
+        public enum Tools { Axe, Pickaxe }
+        public Tools CurrentTool = Tools.Axe;
 
         protected virtual void Start()
         {
@@ -115,7 +123,26 @@ namespace Pinpin
             return dstA.CompareTo(dstB);
         }
 
-        #region Cut Wood Animation
+        #region Tools
+
+        public void ChangeTool(Tools newTool)
+        {
+            if (CurrentTool == newTool) return;
+
+            CurrentTool = newTool;
+
+            switch (CurrentTool)
+            {
+                case Tools.Axe:
+                    pickaxe.SetActive(false);
+                    axe.SetActive(true);
+                    break;
+                case Tools.Pickaxe:
+                    pickaxe.SetActive(true);
+                    axe.SetActive(false);
+                    break;
+            }
+        }
 
         //animation event
         public virtual void Hit()
@@ -125,12 +152,24 @@ namespace Pinpin
             m_targetCollectible.Hit(m_strength);
 
             //play vfx (particle system)
-            toolHitParticleSystem.Play();
+            if (CurrentTool == Tools.Axe)
+            {
+                axeHitParticleSystem.Play();
+            }
+            else
+            {
+                pickaxeHitParticleSystem.Play();
+            }
         }
 
         private void StartChopAnimation()
         {
             m_animator.SetTrigger("Chop");
+        }
+
+        private void StartPickAnimation()
+        {
+            m_animator.SetTrigger("Pick");
         }
 
         #endregion
@@ -139,7 +178,7 @@ namespace Pinpin
         {
             if (m_collectiblesInRange.Count > 0)
             {
-                //turn on cutting wood anim
+                //turn on collecting anim
 
                 m_collectiblesInRange.Sort(SortByDistance);
                 if (m_targetCollectible != null && m_targetCollectible != m_collectiblesInRange[0])
@@ -166,12 +205,23 @@ namespace Pinpin
                 if (Time.time >= m_lastAttackTime + (1 / m_chopPerSecond))
                 {
                     m_lastAttackTime = Time.time;
-                    StartChopAnimation();
+
+                    //switch tool and animation according to current collectible kind
+                    if (m_targetCollectible is Tree)
+                    {
+                        StartChopAnimation();
+                        ChangeTool(Tools.Axe);
+                    }
+                    else if (m_targetCollectible is Rock)
+                    {
+                        StartPickAnimation();
+                        ChangeTool(Tools.Pickaxe);
+                    }
                 }
             }
             else
             {
-                //turn off cutting wood anim
+                //turn off collecting anim
 
                 if (m_targetCollectible != null)
                 {

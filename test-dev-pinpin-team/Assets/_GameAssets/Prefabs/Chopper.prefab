@@ -1959,10 +1959,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_animator: {fileID: 7328786402183479674}
   m_animatorIKTargeter: {fileID: 8879529225366403534}
-  toolHitParticleSystem: {fileID: 2788214354519251103}
+  axe: {fileID: 7840447971490447512}
+  pickaxe: {fileID: 0}
+  axeHitParticleSystem: {fileID: 2788214354519251103}
+  pickaxeHitParticleSystem: {fileID: 0}
   m_maxSpeed: 3
   m_strength: 1
   m_chopPerSecond: 1
+  CurrentTool: 0
   playerAudioSource: {fileID: 102851221983837973}
   walkingSFX:
   - {fileID: 8300000, guid: bde49e84a68742f45a2bbc5e9df09af5, type: 3}
@@ -2176,6 +2180,12 @@ Transform:
 --- !u!198 &2788214354519251103 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 159000811350987627, guid: 5aa3ba7780c3a2244bcd36dd175baeaa,
+    type: 3}
+  m_PrefabInstance: {fileID: 2631606640462318580}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7840447971490447512 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5209404351890459500, guid: 5aa3ba7780c3a2244bcd36dd175baeaa,
     type: 3}
   m_PrefabInstance: {fileID: 2631606640462318580}
   m_PrefabAsset: {fileID: 0}

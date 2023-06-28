@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Pinpin;
 
-public class TreeSpawner : MonoBehaviour
+public class CollectibleSpawner : MonoBehaviour
 {
     //TODO : make an actual tool
     #region Tool
@@ -15,12 +15,18 @@ public class TreeSpawner : MonoBehaviour
     [Header("References")]
     [SerializeField] GameObject treePrefab;
     [SerializeField] GameObject treesParent;
-    [SerializeField] BoxCollider spawnArea;
+    [SerializeField] BoxCollider treeSpawnArea;
+    [SerializeField] GameObject rockPrefab;
+    [SerializeField] GameObject rocksParent;
+    [SerializeField] BoxCollider rockSpawnArea;
 
     [Header("Properties")]
-    [SerializeField] float spawnDelay = 5;
+    [SerializeField] float treeSpawnDelay = 5;
     public List<Pinpin.Tree> Trees = new List<Pinpin.Tree>();
+    [SerializeField] float rockSpawnDelay = 30;
 
+
+    #region Tree
 
     [ContextMenu("GenerateTree")]
     public void GenerateTree()
@@ -45,19 +51,19 @@ public class TreeSpawner : MonoBehaviour
 
     public void SpawnNewTree()
     {
-        StartCoroutine(SpawnerClock());
+        StartCoroutine(TreeSpawnerClock());
     }
 
-    IEnumerator SpawnerClock()
+    IEnumerator TreeSpawnerClock()
     {
-        yield return new WaitForSeconds(spawnDelay);
+        yield return new WaitForSeconds(treeSpawnDelay);
         SpawnTree();
     }
 
     void SpawnTree()
     {
-        Vector3 treePosition = RandomPointInBounds(spawnArea.bounds);
-        GameObject newTree = Instantiate(treePrefab, treePosition, treesParent.transform.rotation, treesParent.transform);
+        Vector3 treePosition = RandomPointInBounds(treeSpawnArea.bounds);
+        GameObject newTree = Instantiate(treePrefab, treePosition, treePrefab.transform.rotation, treesParent.transform);
         Pinpin.Tree treeScript = newTree.GetComponent<Pinpin.Tree>();
 
         Trees.Add(treeScript);
@@ -72,4 +78,27 @@ public class TreeSpawner : MonoBehaviour
             Random.Range(bounds.min.z, bounds.max.z)
         );
     }
+
+    #endregion
+
+    #region Rock
+
+    public void SpawnNewRock()
+    {
+        StartCoroutine(RockSpawnerClock());
+    }
+
+    IEnumerator RockSpawnerClock()
+    {
+        yield return new WaitForSeconds(treeSpawnDelay);
+        SpawnRock();
+    }
+
+    void SpawnRock()
+    {
+        Vector3 rockPosition = RandomPointInBounds(rockSpawnArea.bounds);
+        GameObject newTree = Instantiate(rockPrefab, rockPosition, rockPrefab.transform.rotation, rocksParent.transform);
+    }
+
+    #endregion
 }

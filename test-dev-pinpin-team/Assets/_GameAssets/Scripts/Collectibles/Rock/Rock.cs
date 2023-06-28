@@ -24,8 +24,8 @@ public class Rock : Collectible
         //add tree to storage and update ui
         GameManager.Instance.NewRockInStorage();
 
-        //spaw a new rock in 5 sec
-        //GameManager.Instance.TreeSpawner.SpawnNewTree();
+        //spaw a new rock in 30 sec
+        GameManager.Instance.TreeSpawner.SpawnNewRock();
 
         base.Die();
     }

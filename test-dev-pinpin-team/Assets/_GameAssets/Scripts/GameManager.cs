@@ -25,8 +25,8 @@ namespace Pinpin
         [SerializeField] private UIManager uiManager;
         public UIManager UIManager => m_instance.uiManager;
 
-        [SerializeField] private TreeSpawner treeSpawner;
-        public TreeSpawner TreeSpawner => m_instance.treeSpawner;
+        [SerializeField] private CollectibleSpawner treeSpawner;
+        public CollectibleSpawner TreeSpawner => m_instance.treeSpawner;
 
         [SerializeField] private AudioManager audioManager;
         public AudioManager AudioManager => m_instance.audioManager;
@@ -35,6 +35,7 @@ namespace Pinpin
 
         //score
         public int WoodCount;
+        public int StoneCount;
         public int AmountTreeCut;
 
 
@@ -57,25 +58,31 @@ namespace Pinpin
             {
                 Debug.Log("Load previous save");
                 WoodCount = PlayerPrefs.GetInt("WoodCount");
+                StoneCount = PlayerPrefs.GetInt("StoneCount");
                 AmountTreeCut = PlayerPrefs.GetInt("AmountTreeCut");
                 Player.ChoppingSpeed = PlayerPrefs.GetInt("ChoppingSpeedMultiplicator");
+                Chopper.IsPurchased = (PlayerPrefs.GetInt("IsChopperPurchased") != 0);
 
                 //
                 if (Player.ChoppingSpeed <= 0) Player.ChoppingSpeed = 1;
 
                 //update UI
                 UIManager.SetTreeAmount(WoodCount);
+                UIManager.SetStoneAmount(StoneCount);
                 UIManager.ChoppingBoostLevel.text = Player.ChoppingSpeed.ToString();
             }
             else
             {
                 Debug.Log("Create save");
                 PlayerPrefs.SetInt("WoodCount", 0);
+                PlayerPrefs.SetInt("StoneCount", 0);
                 PlayerPrefs.SetInt("AmountTreeCut", 0);
                 PlayerPrefs.SetFloat("ChoppingSpeedMultiplicator", 1);
+                PlayerPrefs.SetInt("IsChopperPurchased", (Chopper.IsPurchased ? 1 : 0));
                 PlayerPrefs.Save();
 
                 WoodCount = 0;
+                StoneCount = 0;
                 AmountTreeCut = 0;
             }
         }
@@ -99,7 +106,13 @@ namespace Pinpin
 
         public void NewRockInStorage()
         {
+            StoneCount += 5;
 
+            //save change
+            PlayerPrefs.SetInt("StoneCount", StoneCount);
+            PlayerPrefs.Save();
+
+            UIManager.ChangeStoneAmount(5);
         }
 
         public bool UseWood(int woodAmount)
@@ -119,6 +132,22 @@ namespace Pinpin
             }
         }
 
+        public bool UseStone(int stoneAmount)
+        {
+            if (StoneCount < stoneAmount) return false;
+            else
+            {
+                StoneCount -= stoneAmount;
+
+                //save change
+                PlayerPrefs.SetInt("StoneCount", StoneCount);
+                PlayerPrefs.Save();
+
+                UIManager.SetStoneAmount(StoneCount);
+                return true;
+            }
+        }
+
         [ContextMenu("LevelWon")]
         public void LevelWon()
         {
@@ -134,6 +163,7 @@ namespace Pinpin
         {
             //save players progration
             PlayerPrefs.SetInt("WoodCount", WoodCount);
+            PlayerPrefs.SetInt("StoneCount", StoneCount);
             PlayerPrefs.SetInt("AmountTreeCut", AmountTreeCut);
             PlayerPrefs.SetFloat("ChoppingSpeedMultiplicator", Player.ChoppingSpeed);
             PlayerPrefs.Save();

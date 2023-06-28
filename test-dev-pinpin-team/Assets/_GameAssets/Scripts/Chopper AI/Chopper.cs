@@ -19,9 +19,16 @@ public class Chopper : Character
     [SerializeField] float m_moveAcceleration = 3f;
 
     //IA
+    public bool IsPurchased = false;
     private enum ChopperState { Waiting, ReachingTree, Chop, EndChop }
     private ChopperState currentState = ChopperState.Waiting;
     private Pinpin.Tree targetedTree;
+
+    public void Purchase()
+    {
+        IsPurchased = true;
+        PlayerPrefs.SetInt("IsChopperPurchased", (IsPurchased ? 1 : 0));
+    }
 
     #region Movement
 
@@ -76,7 +83,7 @@ public class Chopper : Character
 
     public void NewTreeAppeared(Pinpin.Tree newTree)
     {
-        if (currentState != ChopperState.Waiting) return;
+        if (currentState != ChopperState.Waiting || !IsPurchased) return;
 
         targetedTree = newTree;
         currentState = ChopperState.ReachingTree;
@@ -99,15 +106,15 @@ public class Chopper : Character
 
     public override void Update()
     {
+        if (!IsPurchased) return;
+
         switch (currentState)
         {
             case ChopperState.Waiting:
-                Debug.Log("Waiting state");
 
                 StopMoving();
                 break;
             case ChopperState.ReachingTree:
-                Debug.Log("ReachingTree state");
 
                 //in case player cuts targeted tree
                 if (targetedTree == null)
@@ -133,7 +140,6 @@ public class Chopper : Character
 
                 break;
             case ChopperState.Chop:
-                Debug.Log("Chop state");
                 StopMoving();
 
                 if (targetedTree == null || targetedTree.IsBurning)
@@ -144,7 +150,6 @@ public class Chopper : Character
 
                 break;
             case ChopperState.EndChop:
-                Debug.Log("EndChop state");
 
                 //look for new tree or switch state to waiting
                 SearchTree();
